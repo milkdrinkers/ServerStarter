@@ -22,6 +22,7 @@ class DownloadLoaderException(message: String, exception: Exception) : IOExcepti
 
 class LoaderManager(private val configFile: ConfigFile, private val internetManager: InternetManager) {
     private val runningProcesses = mutableListOf<Process>()
+
     init {
         setupShutdownHook()
     }
@@ -47,18 +48,21 @@ class LoaderManager(private val configFile: ConfigFile, private val internetMana
                             timerString.length - 1
                         )
                     ) * 60 * 60
+
                     timerString.endsWith("min") -> java.lang.Long.parseLong(
                         timerString.substring(
                             0,
                             timerString.length - 3
                         )
                     ) * 60
+
                     timerString.endsWith("s") -> java.lang.Long.parseLong(
                         timerString.substring(
                             0,
                             timerString.length - 1
                         )
                     )
+
                     else -> java.lang.Long.parseLong(timerString)
                 }
             } catch (e: NumberFormatException) {
@@ -231,8 +235,8 @@ class LoaderManager(private val configFile: ConfigFile, private val internetMana
 
             if (configFile.launch.ramDisk)
                 if (levelName == null) {
-                     LOGGER.error("The level-name in the server.properties is empty, therefore we can't create a ramdisk")
-                }else if (OSUtil.isLinux) {
+                    LOGGER.error("The level-name in the server.properties is empty, therefore we can't create a ramdisk")
+                } else if (OSUtil.isLinux) {
                     ramPreArguments.addAll(arrayOf("rsync", "-aAXv", "${levelName}_backup/", levelName))
                 } else {
                     LOGGER.warn("Windows does not support RAMDisk yet!")
@@ -280,6 +284,7 @@ class LoaderManager(private val configFile: ConfigFile, private val internetMana
                     true -> {
                         ramPostArguments.addAll(arrayOf("rsync", "-aAXv", "$levelName/", "${levelName}_backup"))
                     }
+
                     false -> {
                         LOGGER.warn("Windows does not support RAMDisk yet!")
                     }
@@ -322,7 +327,7 @@ class LoaderManager(private val configFile: ConfigFile, private val internetMana
                 arrayOf("which", "-a", "java")
             }
             try {
-                val path = Runtime.getRuntime().exec(command )
+                val path = Runtime.getRuntime().exec(command)
                     .inputStream
                     .bufferedReader()
                     .readLines()
@@ -347,9 +352,9 @@ class LoaderManager(private val configFile: ConfigFile, private val internetMana
                 "java"
             }
         }
+
         else -> "java"
     }
-
 
 
     /**

@@ -1,16 +1,13 @@
 package atm.bloodworkxgaming.serverstarter.packtype.curse
 
 import atm.bloodworkxgaming.serverstarter.InternetManager
-import atm.bloodworkxgaming.serverstarter.ServerStarter
 import atm.bloodworkxgaming.serverstarter.ServerStarter.Companion.LOGGER
 import atm.bloodworkxgaming.serverstarter.config.ConfigFile
 import atm.bloodworkxgaming.serverstarter.packtype.AbstractZipbasedPackType
 import atm.bloodworkxgaming.serverstarter.packtype.writeToFile
-import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import com.google.gson.Gson
 import com.google.gson.JsonParser
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.Request
@@ -24,9 +21,7 @@ import java.net.URISyntaxException
 import java.nio.file.PathMatcher
 import java.nio.file.Paths
 import java.util.*
-import java.util.concurrent.ConcurrentLinkedQueue
 import java.util.concurrent.atomic.AtomicInteger
-import java.util.logging.Logger
 import java.util.regex.Pattern
 import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
@@ -138,11 +133,11 @@ open class CursePackType(private val configFile: ConfigFile, internetManager: In
         val mods = ArrayList<ModEntryRaw>()
         var manifest = true
         var file = File(basePath + "manifest.json")
-        if(!file.exists()) {
+        if (!file.exists()) {
             file = File(basePath + "minecraftinstance.json")
             manifest = false
         }
-        if(!file.exists()){
+        if (!file.exists()) {
             LOGGER.error("No Manifest or minecraftinstance json found. Skipping mod downloads")
             return
         }
@@ -150,8 +145,7 @@ open class CursePackType(private val configFile: ConfigFile, internetManager: In
         InputStreamReader(FileInputStream(file), "utf-8").use { reader ->
             val json = JsonParser().parse(reader).asJsonObject
             LOGGER.info("manifest JSON Object: $json", true)
-            if (manifest)
-            {
+            if (manifest) {
                 val mcObj = json.getAsJsonObject("minecraft")
 
                 if (mcVersion.isEmpty()) {
@@ -170,9 +164,9 @@ open class CursePackType(private val configFile: ConfigFile, internetManager: In
                 for (jsonElement in json.getAsJsonArray("files")) {
                     val obj = jsonElement.asJsonObject
                     mods.add(ModEntryRaw(
-                            obj.getAsJsonPrimitive("projectID").asString,
-                            obj.getAsJsonPrimitive("fileID").asString,
-                            obj.getAsJsonPrimitive("downloadUrl")?.asString ?: ""))
+                        obj.getAsJsonPrimitive("projectID").asString,
+                        obj.getAsJsonPrimitive("fileID").asString,
+                        obj.getAsJsonPrimitive("downloadUrl")?.asString ?: ""))
                 }
             } else {
                 val mcObj = json.getAsJsonObject("baseModLoader")
@@ -189,7 +183,7 @@ open class CursePackType(private val configFile: ConfigFile, internetManager: In
                     val fileID = obj.getAsJsonObject("installedFile").getAsJsonPrimitive("id").asString
                     val downloadUrl = obj.getAsJsonObject("installedFile").getAsJsonPrimitive("downloadUrl").asString
 
-                    mods.add(ModEntryRaw(projectID,fileID,downloadUrl))
+                    mods.add(ModEntryRaw(projectID, fileID, downloadUrl))
                 }
             }
 
@@ -220,6 +214,7 @@ open class CursePackType(private val configFile: ConfigFile, internetManager: In
         LOGGER.info("Requesting Download links from curse api.")
 
         data class GetModFilesRequestBody(val fileIds: List<String>)
+
         val fileList = GetModFilesRequestBody(mods.map { it.fileID }.toList())
         println(fileList)
 

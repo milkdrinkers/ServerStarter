@@ -151,15 +151,15 @@ class ServerStarter(args: Array<String>) {
 
         if (!internetManager.checkConnection() && config.launch.checkOffline) {
             LOGGER.error("Problems with the Internet connection, please check your connection!\n" +
-                    "This could however be a problem with the servers as well.\n" +
-                    "Continuing to download, but this may fail!")
+                "This could however be a problem with the servers as well.\n" +
+                "Continuing to download, but this may fail!")
         }
 
 
         val forgeManager = LoaderManager(config, internetManager)
         if (lockFile.checkShouldInstall(config) || installOnly) {
             val packtype = IPackType.createPackType(config.install.modpackFormat, config, internetManager)
-                    ?: throw InitException("Unknown pack format given in config, shutting down.")
+                ?: throw InitException("Unknown pack format given in config, shutting down.")
 
             packtype.installPack()
             lockFile.packInstalled = true
@@ -203,7 +203,7 @@ fun main(args: Array<String>) {
         AnsiConsole.systemInstall()
     } catch (e: Exception) {
         println("jansi couldn't be installed in this terminal (e.g. due to aarch64 not being supported)\n" +
-                "Future terminal messages will have no color.")
+            "Future terminal messages will have no color.")
     }
 
     try {

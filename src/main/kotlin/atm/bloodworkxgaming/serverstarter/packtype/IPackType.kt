@@ -9,11 +9,11 @@ import atm.bloodworkxgaming.serverstarter.packtype.zip.ZipFilePackType
 interface IPackType {
     companion object {
         private val packtype = mutableMapOf<String, (ConfigFile, InternetManager) -> IPackType>(
-                Pair("curse", ::CursePackType),
-                Pair("curseforge", ::CursePackType),
-                Pair("curseid", ::CurseIDPackType),
-                Pair("zip", ::ZipFilePackType),
-                Pair("zipfile", ::ZipFilePackType)
+            Pair("curse", ::CursePackType),
+            Pair("curseforge", ::CursePackType),
+            Pair("curseid", ::CurseIDPackType),
+            Pair("zip", ::ZipFilePackType),
+            Pair("zipfile", ::ZipFilePackType)
         )
 
         fun createPackType(packTypeName: String, configFile: ConfigFile, internetManager: InternetManager): IPackType? {

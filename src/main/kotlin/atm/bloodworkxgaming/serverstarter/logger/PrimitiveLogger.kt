@@ -1,6 +1,5 @@
 package atm.bloodworkxgaming.serverstarter.logger
 
-import okio.Okio
 import okio.buffer
 import okio.sink
 import org.fusesource.jansi.Ansi

@@ -18,14 +18,14 @@ abstract class AbstractZipbasedPackType(private val configFile: ConfigFile, prot
                 val url = configFile.install.modpackUrl
                 File(basePath).mkdirs()
                 val patterns = configFile.install.ignoreFiles
-                        .map {
-                            val s = if (it.startsWith("glob:") || it.startsWith("regex:"))
-                                it
-                            else
-                                "glob:$it"
+                    .map {
+                        val s = if (it.startsWith("glob:") || it.startsWith("regex:"))
+                            it
+                        else
+                            "glob:$it"
 
-                            FileSystems.getDefault().getPathMatcher(s)
-                        }
+                        FileSystems.getDefault().getPathMatcher(s)
+                    }
 
                 handleZip(obtainZipFile(url), patterns)
             }

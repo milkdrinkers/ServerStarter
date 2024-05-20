@@ -2,9 +2,9 @@ package atm.bloodworkxgaming.serverstarter.util
 
 
 data class ArgsConfig(
-        var yamlPath: String = "./server-setup-config.yaml",
-        var loggerPath: String = "./serverstarter.log",
-        var installForge: Boolean = true
+    var yamlPath: String = "./server-setup-config.yaml",
+    var loggerPath: String = "./serverstarter.log",
+    var installForge: Boolean = true
 ) {
     companion object {
         fun readFromArgs(args: Array<String>): ArgsConfig {
