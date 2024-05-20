@@ -77,6 +77,7 @@ tasks.register<Copy>("generateResources") {
         file("src/main/resources/startserver.sh")
     )
     filter { it.replace("@@serverstarter-libVersion@@", versionArg) }
+    delete(layout.buildDirectory.dir("generatedResources"))
     into(file(layout.buildDirectory.dir("generatedResources")))
 }
 
