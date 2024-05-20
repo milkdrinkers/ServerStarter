@@ -73,7 +73,9 @@ jobs:
         id: release
         with:
           name: ${{ format('Release {0}', github.ref_name) }}
-          files: ${{ github.workspace }}/build/libs/*
+          files: |
+            ${{ github.workspace }}/build/libs/*
+            ${{ github.workspace }}/build/generatedResources/*
           prerelease: ${{ contains(github.ref_name, '-RC-') }}
           generate_release_notes: true
           fail_on_unmatched_files: true

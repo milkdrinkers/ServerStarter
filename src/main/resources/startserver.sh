@@ -24,7 +24,7 @@ if [ -f serverstarter-@@serverstarter-libVersion@@.jar ]; then
     fi
     exit 0
 else
-    export URL="https://github.com/milkdrinkers/ServerStarter/releases/download/v@@serverstarter-libVersion@@/serverstarter-@@serverstarter-libVersion@@.jar"
+    export URL="https://github.com/milkdrinkers/ServerStarter/releases/download/@@serverstarter-libVersion@@/serverstarter-@@serverstarter-libVersion@@.jar"
 fi
 echo $URL
 which wget >> /dev/null

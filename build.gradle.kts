@@ -49,6 +49,7 @@ tasks {
         options.encoding = Charsets.UTF_8.name()
         options.release.set(8)
         options.compilerArgs.addAll(arrayListOf("-Xlint:all", "-Xlint:-processing", "-Xdiags:verbose"))
+        dependsOn("generateResources")
     }
 
     processResources {
@@ -60,6 +61,17 @@ tasks {
         archiveClassifier.set("")
         minimize()
     }
+}
+
+tasks.register<Copy>("generateResources") {
+    group = "build"
+
+    from(
+        file("src/main/resources/startserver.bat"),
+        file("src/main/resources/startserver.sh")
+    )
+    filter { it.replace("@@serverstarter-libVersion@@", versionArg) }
+    into(file(layout.buildDirectory.dir("generatedResources")))
 }
 
 // Apply custom version arg
