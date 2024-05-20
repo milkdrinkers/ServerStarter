@@ -122,6 +122,10 @@ install:
   # Whether to install the Loader (Forge or Fabric) or not, should always be true unless you only want to install the pack
   installLoader: true
 
+  # Whether to install the Pack from supplied link or zipfile or just run an already installed pack
+  # Will download mods from manifest or minecraftinstance.json depending on modpackformat
+  installPack: true
+
   # Sponge bootstrapper jar URL
   # Only needed if you have spongefix enabled
   spongeBootstrapper: https://github.com/simon816/SpongeBootstrap/releases/download/v0.7.1/SpongeBootstrap-0.7.1.jar

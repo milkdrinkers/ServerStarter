@@ -76,6 +76,7 @@ data class InstallConfig(
 
     var checkFolder: Boolean = false,
     var installLoader: Boolean = false,
+    var installPack: Boolean = true,
 
     var spongeBootstrapper: String = "",
     var connectTimeout: Long = 30,

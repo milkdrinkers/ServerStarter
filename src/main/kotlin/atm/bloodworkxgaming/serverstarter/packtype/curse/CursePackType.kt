@@ -131,31 +131,63 @@ open class CursePackType(private val configFile: ConfigFile, internetManager: In
     @Throws(IOException::class)
     override fun postProcessing() {
         val mods = ArrayList<ModEntryRaw>()
+        var manifest = true
+        var file = File(basePath + "manifest.json")
+        if(!file.exists()) {
+            file = File(basePath + "minecraftinstance.json")
+            manifest = false
+        }
+        if(!file.exists()){
+            LOGGER.error("No Manifest or minecraftinstance json found. Skipping mod downloads")
+            return
+        }
 
-        InputStreamReader(FileInputStream(File(basePath + "manifest.json")), "utf-8").use { reader ->
+        InputStreamReader(FileInputStream(file), "utf-8").use { reader ->
             val json = JsonParser().parse(reader).asJsonObject
             LOGGER.info("manifest JSON Object: $json", true)
-            val mcObj = json.getAsJsonObject("minecraft")
+            if (manifest)
+            {
+                val mcObj = json.getAsJsonObject("minecraft")
 
-            if (mcVersion.isEmpty()) {
-                mcVersion = mcObj.getAsJsonPrimitive("version").asString
-            }
+                if (mcVersion.isEmpty()) {
+                    mcVersion = mcObj.getAsJsonPrimitive("version").asString
+                }
 
-            // gets the forge version
-            if (forgeVersion.isEmpty()) {
-                val loaders = mcObj.getAsJsonArray("modLoaders")
-                if (loaders.size() > 0) {
-                    forgeVersion = loaders[0].asJsonObject.getAsJsonPrimitive("id").asString.substring(6)
+                // gets the forge version
+                if (forgeVersion.isEmpty()) {
+                    val loaders = mcObj.getAsJsonArray("modLoaders")
+                    if (loaders.size() > 0) {
+                        forgeVersion = loaders[0].asJsonObject.getAsJsonPrimitive("id").asString.substring(6)
+                    }
+                }
+
+                // gets all the mods
+                for (jsonElement in json.getAsJsonArray("files")) {
+                    val obj = jsonElement.asJsonObject
+                    mods.add(ModEntryRaw(
+                            obj.getAsJsonPrimitive("projectID").asString,
+                            obj.getAsJsonPrimitive("fileID").asString,
+                            obj.getAsJsonPrimitive("downloadUrl")?.asString ?: ""))
+                }
+            } else {
+                val mcObj = json.getAsJsonObject("baseModLoader")
+                if (mcVersion.isEmpty()) {
+                    mcVersion = mcObj.getAsJsonPrimitive("minecraftVersion").asString
+                }
+                if (forgeVersion.isEmpty()) {
+                    forgeVersion = mcObj.getAsJsonPrimitive("forgeVersion").asString
+                }
+
+                for (jsonElement in json.getAsJsonArray("installedAddons")) {
+                    val obj = jsonElement.asJsonObject
+                    val projectID = obj.getAsJsonPrimitive("addonID").asString
+                    val fileID = obj.getAsJsonObject("installedFile").getAsJsonPrimitive("id").asString
+                    val downloadUrl = obj.getAsJsonObject("installedFile").getAsJsonPrimitive("downloadUrl").asString
+
+                    mods.add(ModEntryRaw(projectID,fileID,downloadUrl))
                 }
             }
 
-            // gets all the mods
-            for (jsonElement in json.getAsJsonArray("files")) {
-                val obj = jsonElement.asJsonObject
-                mods.add(ModEntryRaw(
-                        obj.getAsJsonPrimitive("projectID").asString,
-                        obj.getAsJsonPrimitive("fileID").asString))
-            }
         }
 
         downloadMods(mods)
@@ -323,4 +355,4 @@ open class CursePackType(private val configFile: ConfigFile, internetManager: In
 /**
  * Data class to keep projectID and fileID together
  */
-data class ModEntryRaw(val projectID: String, val fileID: String)
+data class ModEntryRaw(val projectID: String, val fileID: String, val downloadUrl: String)

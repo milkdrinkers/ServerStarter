@@ -13,11 +13,10 @@ abstract class AbstractZipbasedPackType(private val configFile: ConfigFile, prot
     protected val basePath = configFile.install.baseInstallPath
 
     override fun installPack() {
-        if (configFile.install.modpackUrl.isNotEmpty()) {
-            val url = configFile.install.modpackUrl
-            File(basePath).mkdirs()
-
-            try {
+        try {
+            if (configFile.install.installPack && configFile.install.modpackUrl.isNotEmpty()) {
+                val url = configFile.install.modpackUrl
+                File(basePath).mkdirs()
                 val patterns = configFile.install.ignoreFiles
                         .map {
                             val s = if (it.startsWith("glob:") || it.startsWith("regex:"))
@@ -29,11 +28,10 @@ abstract class AbstractZipbasedPackType(private val configFile: ConfigFile, prot
                         }
 
                 handleZip(obtainZipFile(url), patterns)
-                postProcessing()
-            } catch (e: IOException) {
-                ServerStarter.LOGGER.error("Error while installing pack", e)
-                throw e
             }
+            postProcessing()
+        } catch (e: IOException) {
+            ServerStarter.LOGGER.error("Error while installing pack", e)
         }
     }
 

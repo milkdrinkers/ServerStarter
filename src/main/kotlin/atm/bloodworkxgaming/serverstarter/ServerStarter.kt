@@ -137,7 +137,7 @@ class ServerStarter(args: Array<String>) {
             info("   This jar will launch a Minecraft Forge/Fabric Modded server")
             info("")
             info(ansi().a("   Github:    ").fgBrightBlue().a("https://github.com/BloodyMods/ServerStarter"))
-            info(ansi().a("   Discord:   ").fgBrightBlue().a("https://discord.gg/A3c5YfV"))
+            info(ansi().a("   Discord:   ").fgBrightBlue().a("https://discord.gg/enigmatica"))
             info("")
             info(ansi().a("You are playing ").fgGreen().a(config.modpack.name))
             info("Starting to install/launch the server, lean back!")
