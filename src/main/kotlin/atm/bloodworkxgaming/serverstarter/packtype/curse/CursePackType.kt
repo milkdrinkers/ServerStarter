@@ -24,6 +24,7 @@ import java.net.URISyntaxException
 import java.nio.file.PathMatcher
 import java.nio.file.Paths
 import java.util.*
+import java.util.concurrent.ConcurrentLinkedQueue
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.logging.Logger
 import java.util.regex.Pattern
@@ -277,59 +278,15 @@ open class CursePackType(private val configFile: ConfigFile, internetManager: In
             }
 
 
-        val urls = ConcurrentLinkedQueue<String>()
 
         LOGGER.info("Requesting Download links from CFCore API.")
 
-        if (configFile.install.curseForgeAPIKey.isEmpty()) {
+        if (configFile.install.curseForgeApiKey.isEmpty()) {
             LOGGER.error("No API Key provided. Please see https://github.com/Ocraftyone/ServerStarter-CFCorePatch for details on how to obtain a key")
             exitProcess(1)
         }
 
-        mods.parallelStream().forEach { mod ->
-            if (ignoreSet.isNotEmpty() && ignoreSet.contains(mod.projectID)) {
-                LOGGER.info("Skipping mod with projectID: " + mod.projectID)
-                return@forEach
-            }
-
-            //old code using cursemeta servers, removed fallback and made hardcoded bc the api calls are incompatable
-//            val url = (configFile.install.getFormatSpecificSettingOrDefault("cursemeta", "https://cursemeta.dries007.net")
-//                    + "/" + mod.projectID + "/" + mod.fileID + ".json")//
-            val url = "https://api.curseforge.com/v1/mods/" + mod.projectID + "/files/" + mod.fileID + "/download-url"
-            LOGGER.info("Download url is: $url", true)
-
-            try {
-                val request = Request.Builder()
-                    .url(url)
-                    .header("User-Agent", "All the mods server installer.")
-                    .header("Content-Type", "application/json")
-                    .header("x-api-key", configFile.install.curseForgeAPIKey)
-                    .build()
-
-                val res = internetManager.httpClient.newCall(request).execute()
-
-                if (!res.isSuccessful)
-                    throw IOException("Request to $url was not successful.")
-                val body = res.body ?: throw IOException("Request to $url returned a null body.")
-
-                val jsonRes = JsonParser().parse(body.string()).asJsonObject
-                LOGGER.info("Response from manifest query: $jsonRes", true)
-
-                if (!jsonRes.asJsonObject.get("data").isJsonNull) {
-                    urls.add(
-//                    jsonRes
-//                        .asJsonObject
-//                        .getAsJsonPrimitive("DownloadURL").asString
-                        jsonRes.asJsonObject.getAsJsonPrimitive("data").asString
-
-                    )
-                } else {
-                    LOGGER.error("Mod failed to produce download URL - ProjectID: " + mod.projectID + ", FileID: " + mod.fileID)
-                }
-            } catch (e: IOException) {
-                LOGGER.error("Error while trying to get URL from CFCore for mod $mod", e)
-            }
-        }
+        val urls = requestModInformation(mods, ignoreSet)
 
         LOGGER.info("Mods to download: $urls", true)
 
