@@ -143,7 +143,7 @@ open class CursePackType(private val configFile: ConfigFile, internetManager: In
         }
 
         InputStreamReader(FileInputStream(file), "utf-8").use { reader ->
-            val json = JsonParser().parse(reader).asJsonObject
+            val json = JsonParser.parseReader(reader).asJsonObject
             LOGGER.info("manifest JSON Object: $json", true)
             if (manifest) {
                 val mcObj = json.getAsJsonObject("minecraft")

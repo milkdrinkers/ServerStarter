@@ -34,7 +34,7 @@ dependencies {
     annotationProcessor("org.jetbrains:annotations:24.1.0")
 
     testImplementation("junit:junit:4.13.2")
-    implementation("org.yaml:snakeyaml:1.29")
+    implementation("org.yaml:snakeyaml:2.2")
     implementation("commons-io:commons-io:2.11.0")
     implementation("com.squareup.okhttp3:okhttp:4.9.2")
     implementation("com.google.code.gson:gson:2.8.8")
