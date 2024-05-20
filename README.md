@@ -32,7 +32,7 @@ Users should execute either of the two scripts (*or the .jar file*) in the same 
 ---
 
 ## Configuration
-See `server-setup-config.yaml` for an example config. Both `startserver.bat` and `startserver.sh` can be found in [/src/main/resources](./src/main/resources/).
+See `server-setup-config.yaml` for an example config. Both `startserver.bat` and `startserver.sh` can be found included in every release [here](https://github.com/milkdrinkers/ServerStarter/releases).
 
 ### Curse API Key
 #### 1. Official Method
