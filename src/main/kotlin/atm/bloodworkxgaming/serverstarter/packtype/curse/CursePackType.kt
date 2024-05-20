@@ -277,10 +277,6 @@ open class CursePackType(private val configFile: ConfigFile, internetManager: In
                     ignoreSet.add(o.toString())
             }
 
-
-
-        LOGGER.info("Requesting Download links from CFCore API.")
-
         if (configFile.install.curseForgeApiKey.isEmpty()) {
             LOGGER.error("No API Key provided. Please see https://github.com/Ocraftyone/ServerStarter-CFCorePatch for details on how to obtain a key")
             exitProcess(1)
