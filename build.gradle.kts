@@ -15,6 +15,12 @@ version = "2.4.0"
 
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(8))
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+kotlin {
+    jvmToolchain(8)
 }
 
 repositories {
@@ -50,6 +56,12 @@ tasks {
         options.release.set(8)
         options.compilerArgs.addAll(arrayListOf("-Xlint:all", "-Xlint:-processing", "-Xdiags:verbose"))
         dependsOn("generateResources")
+    }
+
+    compileKotlin {
+        kotlinOptions {
+            javaParameters = true
+        }
     }
 
     processResources {
