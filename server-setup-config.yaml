@@ -58,6 +58,11 @@ install:
   # - zip or zipfile
   modpackFormat: curse
 
+  # In order to obtain the download urls for mods enclosed in a curseforge format, you must provide an
+  # API key. Please visit https://github.com/Ocraftyone/ServerStarter-CFCorePatch for more details
+  # on how to obtain a key. This can be omitted if you are using the zip modpackFormat.
+  curseForgeAPIKey:
+
   # Settings which are specific to the format used, might not be needed in some casese
   formatSpecific:
     # optional paramenter used for curse to specify a whole project to ignore (mostly if it is client side only)
@@ -214,7 +219,7 @@ launch:
   # For this you need to have all available JVMs on the PATH
   # -> MC 1.12 to 1.16 requires java [8, 9, 10, 11]
   # -> MC 1.17 requires java [17]
-  supportedJavaVersions: [17]
+  supportedJavaVersions: [ 17 ]
 
   # Java args that are supposed to be used when the server launches
   # keep in mind java args often need ' - ' in front of it to work, use clarifying parentheses to make sure it uses it correctly
@@ -241,3 +246,4 @@ launch:
     - "-XX:MaxTenuringThreshold=1"
     - "-Dfml.readTimeout=90"                        # servertimeout
     - "-Dfml.queryResult=confirm"                   # auto /fmlconfirm
+
