@@ -15,8 +15,6 @@ version = "2.4.0"
 
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(8))
-    withJavadocJar()
-    withSourcesJar()
 }
 
 repositories {
@@ -53,33 +51,13 @@ tasks {
         options.compilerArgs.addAll(arrayListOf("-Xlint:all", "-Xlint:-processing", "-Xdiags:verbose"))
     }
 
-    javadoc {
-        isFailOnError = false
-        val options = options as StandardJavadocDocletOptions
-        options.encoding = Charsets.UTF_8.name()
-        options.overview = "src/main/javadoc/overview.html"
-        options.tags("apiNote:a:API Note:", "implNote:a:Implementation Note:", "implSpec:a:Implementation Requirements:")
-        options.use()
-    }
-
     processResources {
-        filteringCharset = Charsets.UTF_8.name() // We want UTF-8 for everything
+        filteringCharset = Charsets.UTF_8.name()
     }
 
     shadowJar {
         archiveBaseName.set(project.name)
         archiveClassifier.set("")
-
-        // Shadow classes
-//        fun reloc(originPkg: String, targetPkg: String) = relocate(originPkg, "${mainPackage}.lib.${targetPkg}")
-
-//        reloc("space.arim.morepaperlib", "morepaperlib")
-//        reloc("com.github.milkdrinkers.Crate", "crate")
-//        reloc("com.github.milkdrinkers.colorparser", "colorparser")
-//        reloc("dev.jorel.commandapi", "commandapi")
-//        reloc("dev.triumphteam.gui", "gui")
-//        reloc("com.zaxxer.hikari", "hikaricp")
-
         minimize()
     }
 }
