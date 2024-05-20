@@ -59,7 +59,13 @@ tasks {
     shadowJar {
         archiveBaseName.set(project.name)
         archiveClassifier.set("")
-        minimize()
+    }
+
+    jar {
+        manifest {
+            attributes["Class-Path"] = configurations.runtimeClasspath.get().joinToString(" ") { it.name };
+            attributes["Main-Class"] = "atm.bloodworkxgaming.serverstarter.ServerStarterKt"
+        }
     }
 }
 
