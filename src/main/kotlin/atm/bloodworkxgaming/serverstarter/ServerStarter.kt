@@ -26,7 +26,7 @@ class ServerStarter(args: Array<String>) {
         private val rep: Representer = Representer(DumperOptions())
         private val options: DumperOptions = DumperOptions()
         private const val CURRENT_SPEC = 2
-        private const val VERSION = "2.3.2"
+        private const val VERSION = "2.4.0"
 
         val LOGGER = PrimitiveLogger(File("serverstarter.log"))
         var lockFile: LockFile
@@ -157,33 +157,34 @@ class ServerStarter(args: Array<String>) {
         }
 
 
-        val forgeManager = LoaderManager(config, internetManager)
+        val loaderManager = LoaderManager(config, internetManager)
         if (lockFile.checkShouldInstall(config) || installOnly) {
             val packtype = IPackType.createPackType(config.install.modpackFormat, config, internetManager)
                 ?: throw InitException("Unknown pack format given in config, shutting down.")
+
+            if (config.install.modpackFormat == "modrinth") {
+                LOGGER.warn("Which mod supports server-side depends on the setting of the modpack's authro.\nYou may need to delete or add some mods.")
+            }
 
             packtype.installPack()
             lockFile.packInstalled = true
             lockFile.packUrl = config.install.modpackUrl
             saveLockFile(lockFile)
 
-
             if (config.install.installLoader) {
-                val forgeVersion = packtype.getForgeVersion()
+                val loaderVersion = packtype.getLoaderVersion()
                 val mcVersion = packtype.getMCVersion()
-                forgeManager.installLoader(config.install.baseInstallPath, forgeVersion, mcVersion)
+                loaderManager.installLoader(config.install.baseInstallPath, loaderVersion, mcVersion)
             }
 
             if (config.launch.spongefix) {
-                lockFile.spongeBootstrapper = forgeManager.installSpongeBootstrapper(config.install.baseInstallPath)
+                lockFile.spongeBootstrapper = loaderManager.installSpongeBootstrapper(config.install.baseInstallPath)
                 saveLockFile(lockFile)
             }
-
 
             val fileManager = FileManager(config, internetManager)
             fileManager.installAdditionalFiles()
             fileManager.installLocalFiles()
-
 
         } else {
             LOGGER.info("Server is already installed to correct version, to force install delete the serverstarter.lock File.")
@@ -194,7 +195,7 @@ class ServerStarter(args: Array<String>) {
             exitProcess(0)
         }
 
-        forgeManager.handleServer()
+        loaderManager.handleServer()
     }
 }
 

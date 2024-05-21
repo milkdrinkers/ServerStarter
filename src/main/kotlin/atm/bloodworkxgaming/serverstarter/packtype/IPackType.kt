@@ -4,6 +4,7 @@ import atm.bloodworkxgaming.serverstarter.InternetManager
 import atm.bloodworkxgaming.serverstarter.config.ConfigFile
 import atm.bloodworkxgaming.serverstarter.packtype.curse.CurseIDPackType
 import atm.bloodworkxgaming.serverstarter.packtype.curse.CursePackType
+import atm.bloodworkxgaming.serverstarter.packtype.modrinth.ModrinthPackType
 import atm.bloodworkxgaming.serverstarter.packtype.zip.ZipFilePackType
 
 interface IPackType {
@@ -12,6 +13,7 @@ interface IPackType {
             Pair("curse", ::CursePackType),
             Pair("curseforge", ::CursePackType),
             Pair("curseid", ::CurseIDPackType),
+            Pair("modrinth", ::ModrinthPackType),
             Pair("zip", ::ZipFilePackType),
             Pair("zipfile", ::ZipFilePackType)
         )
@@ -27,14 +29,14 @@ interface IPackType {
     fun installPack()
 
     /**
-     * Gets the forge version, can be based on the version from the downloaded pack
+     * Gets the mod-loader version, can be based on the version from the downloaded pack
      *
      * @return String representation of the version
      */
-    fun getForgeVersion(): String
+    fun getLoaderVersion(): String
 
     /**
-     * Gets the forge version, can be based on the version from the downloaded pack
+     * Gets the minecraft version, can be based on the version from the downloaded pack
      *
      * @return String representation of the version
      */

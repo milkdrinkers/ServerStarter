@@ -29,7 +29,7 @@ import kotlin.system.exitProcess
 
 open class CursePackType(private val configFile: ConfigFile, internetManager: InternetManager) :
     AbstractZipbasedPackType(configFile, internetManager) {
-    private var forgeVersion: String = configFile.install.loaderVersion
+    private var loaderVersion: String = configFile.install.loaderVersion
     private var mcVersion: String = configFile.install.mcVersion
     private val oldFiles = File(basePath + "OLD_TO_DELETE/")
 
@@ -40,20 +40,10 @@ open class CursePackType(private val configFile: ConfigFile, internetManager: In
         return url
     }
 
-    /**
-     * Gets the forge version, can be based on the version from the downloaded pack
-     *
-     * @return String representation of the version
-     */
-    override fun getForgeVersion(): String {
-        return forgeVersion
+    override fun getLoaderVersion(): String {
+        return loaderVersion
     }
 
-    /**
-     * Gets the forge version, can be based on the version from the downloaded pack
-     *
-     * @return String representation of the version
-     */
     override fun getMCVersion(): String {
         return mcVersion
     }
@@ -91,7 +81,7 @@ open class CursePackType(private val configFile: ConfigFile, internetManager: In
 
                         when {
                             pathMatchers.any { it.matches(Paths.get(path)) } ->
-                                LOGGER.info("Skipping $path as it is on the ignore List.", true)
+                                LOGGER.info("Skipping $path as it is on the ignore list.", true)
 
 
                             !name.endsWith("/") -> {
@@ -116,7 +106,6 @@ open class CursePackType(private val configFile: ConfigFile, internetManager: In
 
                     entry = zis.nextEntry
                 }
-
 
                 zis.closeEntry()
             }
@@ -153,10 +142,10 @@ open class CursePackType(private val configFile: ConfigFile, internetManager: In
                 }
 
                 // gets the forge version
-                if (forgeVersion.isEmpty()) {
+                if (loaderVersion.isEmpty()) {
                     val loaders = mcObj.getAsJsonArray("modLoaders")
                     if (loaders.size() > 0) {
-                        forgeVersion = loaders[0].asJsonObject.getAsJsonPrimitive("id").asString.substring(6)
+                        loaderVersion = loaders[0].asJsonObject.getAsJsonPrimitive("id").asString.substring(6)
                     }
                 }
 
@@ -173,8 +162,8 @@ open class CursePackType(private val configFile: ConfigFile, internetManager: In
                 if (mcVersion.isEmpty()) {
                     mcVersion = mcObj.getAsJsonPrimitive("minecraftVersion").asString
                 }
-                if (forgeVersion.isEmpty()) {
-                    forgeVersion = mcObj.getAsJsonPrimitive("forgeVersion").asString
+                if (loaderVersion.isEmpty()) {
+                    loaderVersion = mcObj.getAsJsonPrimitive("forgeVersion").asString
                 }
 
                 for (jsonElement in json.getAsJsonArray("installedAddons")) {
@@ -346,11 +335,9 @@ open class CursePackType(private val configFile: ConfigFile, internetManager: In
 
             internetManager.downloadToFile(mod.downloadUrl, File(basePath + "mods/" + fileName))
             LOGGER.info("[" + String.format("% 3d", counter.incrementAndGet()) + "/" + totalCount + "] Downloaded mod: " + mod.displayName)
-
         } catch (e: IOException) {
             LOGGER.error("Failed to download mod", e)
             fallbackList.add(mod)
-
         } catch (e: URISyntaxException) {
             LOGGER.error("Invalid url for $mod", e)
         }

@@ -1,9 +1,4 @@
 import atm.bloodworkxgaming.serverstarter.ServerStarter
-import okhttp3.internal.closeQuietly
-import org.junit.Test
-import java.io.BufferedInputStream
-import java.io.File
-import java.util.*
 
 
 class StarterTests {
@@ -26,7 +21,6 @@ class StarterTests {
                 inputStream.close()
             }
         }
-
 
 
     }
