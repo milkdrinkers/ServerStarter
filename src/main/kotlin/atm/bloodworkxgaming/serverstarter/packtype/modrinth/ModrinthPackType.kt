@@ -122,7 +122,7 @@ open class ModrinthPackType(private val configFile: ConfigFile, internetManager:
             val mcObj = json.getAsJsonObject("dependencies")
 
             if (mcVersion.isEmpty()) {
-                mcVersion = mcObj.getAsJsonArray("minecraft").asString
+                mcVersion = mcObj.getAsJsonPrimitive("minecraft").asString
             }
 
             // gets the modrinth version
@@ -134,7 +134,7 @@ open class ModrinthPackType(private val configFile: ConfigFile, internetManager:
             for (jsonElement in json.getAsJsonArray("files")) {
                 val obj = jsonElement.asJsonObject
                 // don't download things unsupported on the server
-                if (obj.getAsJsonObject("env").getAsJsonPrimitive("server").asString.equals("unsupported")) {
+                if (obj.getAsJsonObject("env")?.getAsJsonPrimitive("server")?.asString.equals("unsupported")) {
                     continue
                 } else {
                     val downloadUrl = obj.getAsJsonArray("downloads").get(0).asString
