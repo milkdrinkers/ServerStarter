@@ -17,28 +17,28 @@ install:
   curseForgeApiKey: '${CURSE_FORGE_API_KEY}'
 
   # version of minecraft, needs the exact version
+  # if this value is a null value so ( ~, null, or '' ) then the version from the mod pack is going to be used
   mcVersion: 1.20.6
 
   # exact version of forge or fabric that is supposed to be used
-  # if this value is a null value so ( ~, null, or "" ) then the version from the mod pack is going to be used
+  # if this value is a null value so ( ~, null, or '' ) then the version from the mod pack is going to be used
   loaderVersion: 37.0.95
 
-  # If a custom installer is supposed to used, specify the url here: (Otherwise put "", ~ or null here)
+  # If a custom installer is supposed to used, specify the url here: (Otherwise put '', ~ or null here)
   # supports variables: {{@loaderversion@}} and {{@mcversion@}}
-  # For forge: "https://files.minecraftforge.net/maven/net/minecraftforge/forge/{{@mcversion@}}-{{@loaderversion@}}/forge-{{@mcversion@}}-{{@loaderversion@}}-installer.jar"
-  # For Fabric: "https://meta.fabricmc.net/v2/versions/loader/{{@mcversion@}}/{{@loaderversion@}}"
+  # For forge: 'https://files.minecraftforge.net/maven/net/minecraftforge/forge/{{@mcversion@}}-{{@loaderversion@}}/forge-{{@mcversion@}}-{{@loaderversion@}}-installer.jar'
+  # For Fabric: 'https://meta.fabricmc.net/v2/versions/loader/{{@mcversion@}}/{{@loaderversion@}}'
   installerUrl: 'https://files.minecraftforge.net/maven/net/minecraftforge/forge/{{@mcversion@}}-{{@loaderversion@}}/forge-{{@mcversion@}}-{{@loaderversion@}}-installer.jar'
 
   # Installer Arguments
   # These Arguments have to be passed to the installer
   #
   # For Fabric:
-  # installerArguments:
-  #   None: it's a executable jar
+  # installerArguments: []
   #
   # For Forge:
   # installerArguments:
-  #   - "--installServer"
+  #   - '--installServer'
   installerArguments:
     - '--installServer'
 
@@ -46,7 +46,7 @@ install:
   # This supports loading from local files as well for most pack types if there is file://{PathToFile} in the beginning
   # Note: file://{PathToFile} does not need the full path, can be a relative path.
   # E.g: modpackUrl: file://../modpacks/All+the+Mods+7-0.0.21.zip
-  modpackUrl: https://mediafilez.forgecdn.net/files/3491/186/All+the+Mods+7-0.0.21.zip
+  modpackUrl: 'https://mediafilez.forgecdn.net/files/3491/186/All+the+Mods+7-0.0.21.zip'
 
   # This is used to specify in which format the modpack is distributed, the server launcher has to handle each individually if their format differs
   # current supported formats:
@@ -54,12 +54,12 @@ install:
   # - modrinth
   # - curseid
   # - zip or zipfile
-  modpackFormat: curse
+  modpackFormat: 'curse'
 
   # Settings which are specific to the format used, might not be needed in some casese
   formatSpecific:
     # optional paramenter used for curse to specify a whole project to ignore (mostly if it is client side only)
-    ignoreProject:
+    ignoreProject: []
       # - 263420
       # - 317780
       # - 232131
@@ -82,7 +82,7 @@ install:
       # - 431430
 
   # The base path where the server should be installed to, ~ for current path
-  baseInstallPath: setup/
+  baseInstallPath: 'server/'
 
   # a list of files which are supposed to be ignored when installing it from the client files
   # this can either use regex or glob {default glob: https://docs.oracle.com/javase/8/docs/api/java/nio/file/FileSystem.html#getPathMatcher-java.lang.String-}
@@ -104,8 +104,7 @@ install:
   # often a server needs more files, which are nearly useless on the client, such as tickprofiler
   # This is a list of files, each ' - ' is a new file:
   # url is the directlink to the file, destination is the path to where the file should be copied to
-  additionalFiles:
-    ~
+  additionalFiles: ~
     #- url: https://media.forgecdn.net/files/2844/278/restrictedportals-1.15-1.0.jar
     #  destination: mods/restrictedportals-1.15-1.0.jar
     #- url: https://media.forgecdn.net/files/2874/966/Morpheus-1.15.2-4.2.46.jar
@@ -133,7 +132,7 @@ install:
 
   # Sponge bootstrapper jar URL
   # Only needed if you have spongefix enabled
-  spongeBootstrapper: https://github.com/simon816/SpongeBootstrap/releases/download/v0.7.1/SpongeBootstrap-0.7.1.jar
+  spongeBootstrapper: 'https://github.com/simon816/SpongeBootstrap/releases/download/v0.7.1/SpongeBootstrap-0.7.1.jar'
 
   # Time in seconds before the connection attempt to any webservice like forge/curseforge times out
   # Only increase this timer if you have problems
@@ -154,7 +153,7 @@ launch:
   ramDisk: false
 
   # checks with the help of a few unrelated server whether the server is online
-  checkOffline: true
+  checkOffline: false
 
   # These servers are going to be checked:
   checkUrls:
@@ -184,32 +183,32 @@ launch:
 
   # Start File Name, variables: {{@loaderversion@}} and {{@mcversion@}}
   # This has to be the name the installer spits out
-  # For Forge 1.12-: "forge-{{@mcversion@}}-{{@loaderversion@}}-universal.jar"
-  # For Forge 1.13+: "forge-{{@mcversion@}}-{{@loaderversion@}}.jar"
-  # For Fabric: "fabric-server-launch.jar"
+  # For Forge 1.12-: 'forge-{{@mcversion@}}-{{@loaderversion@}}-universal.jar'
+  # For Forge 1.13+: 'forge-{{@mcversion@}}-{{@loaderversion@}}.jar'
+  # For Fabric: 'fabric-server-launch.jar'
   startFile: 'forge-{{@mcversion@}}-{{@loaderversion@}}.jar'
 
   # This is the command how the server is supposed to be started
   # All arguments must be separate entries, including options and their values.
-  # For example, "--fml.modLists pathToModListFile" should be:
-  #  - "--fml.modLists"
-  #  - "pathToModListFile"
+  # For example, '--fml.modLists pathToModListFile' should be:
+  #  - '--fml.modLists'
+  #  - 'pathToModListFile'
   #
-  # For <1.16 it should be (Fabric and Forge)
-  #  - "-jar"
-  #  - "{{@startFile@}}"
-  #  - "nogui"
-  # For >=1.17 it should be (Forge, Fabric is the same as <1.16)
-  # - "@libraries/net/minecraftforge/forge/{{@mcversion@}}-{{@loaderversion@}}/{{@os@}}_args.txt"
-  # - "nogui"
+  # For Fabric on all versions and Forge on 1.16 and below 
+  #  - '-jar'
+  #  - '{{@startFile@}}'
+  #  - 'nogui'
+  # For Forge on 1.17 and up
+  # - '@libraries/net/minecraftforge/forge/{{@mcversion@}}-{{@loaderversion@}}/{{@os@}}_args.txt'
+  # - 'nogui'
   startCommand:
     - '@libraries/net/minecraftforge/forge/{{@mcversion@}}-{{@loaderversion@}}/{{@os@}}_args.txt'
     - 'nogui'
 
   # In case you have multiple javas installed you can add a absolute path to it here
-  # The Path has to be enclosed in \" like in the example if it has spaces (or for safety just include them always.)
-  # if the value is "", null, or ~ then 'java' from PATH is going to be used
-  # Example: "\"C:/Program Files/Java/jre1.8.0_201/bin/java.exe\""
+  # The Path has to be enclosed in \' like in the example if it has spaces (or for safety just include them always.)
+  # if the value is '', null, or ~ then 'java' from PATH is going to be used
+  # Example: '\'C:/Program Files/Java/jre1.8.0_201/bin/java.exe\''
   # It also supports replacing with environment variables with ${ENV_VAR} e.g. ${JAVA_HOME}/bin/java.exe
   forcedJavaPath: ~
 
