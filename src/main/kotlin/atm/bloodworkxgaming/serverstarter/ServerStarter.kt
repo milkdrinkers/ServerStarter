@@ -26,7 +26,6 @@ class ServerStarter(args: Array<String>) {
         private val rep: Representer = Representer(DumperOptions())
         private val options: DumperOptions = DumperOptions()
         private const val CURRENT_SPEC = 2
-        private const val VERSION = "2.4.0"
 
         val LOGGER = PrimitiveLogger(File("serverstarter.log"))
         var lockFile: LockFile
@@ -132,7 +131,6 @@ class ServerStarter(args: Array<String>) {
             info(ansi().fgRed().a(":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"))
             info(ansi().fgBrightBlue().a("   Minecraft ServerStarter install/launcher jar"))
             info(ansi().fgBrightBlue().a("   (Created by ").fgGreen().a("BloodWorkXGaming").fgBrightBlue().a(" with the help of ").fgGreen().a("Contributors").fgBrightBlue().a(")"))
-            info(ansi().fgBrightBlue().a("   Version $VERSION"))
             info(ansi().fgRed().a(":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"))
             info("")
             info("   This jar will launch a Minecraft Forge/Fabric Modded server")

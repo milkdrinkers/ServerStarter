@@ -25,7 +25,7 @@ class TestOKHttp {
 
     // @Test
     fun testDownload() {
-        val client = OkHttpClient.Builder()
+        /*val client = OkHttpClient.Builder()
             .build()
 
         val req = Request.Builder()
@@ -43,7 +43,7 @@ class TestOKHttp {
         sink.close()
 
         println(res.header("Location"))
-        println(res.isRedirect)
+        println(res.isRedirect)*/
     }
 }
 

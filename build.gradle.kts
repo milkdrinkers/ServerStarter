@@ -11,7 +11,7 @@ plugins {
 }
 
 group = "atm.bloodworkxgaming"
-version = "2.4.0"
+version = "2.5.0"
 
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(8))
@@ -33,17 +33,20 @@ dependencies {
     compileOnly("org.jetbrains:annotations:24.1.0")
     annotationProcessor("org.jetbrains:annotations:24.1.0")
 
-    testImplementation("junit:junit:4.13.2")
-    implementation("org.yaml:snakeyaml:2.2")
-    implementation("commons-io:commons-io:2.11.0")
-    implementation("com.squareup.okhttp3:okhttp:4.9.2")
-    implementation("com.google.code.gson:gson:2.8.8")
+    testImplementation(platform("org.junit:junit-bom:5.10.2"))
+    testImplementation("org.junit.jupiter:junit-jupiter")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.13.3")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.3")
+    implementation("org.yaml:snakeyaml:2.2")
+    implementation("commons-io:commons-io:2.16.1")
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation("com.google.code.gson:gson:2.11.0")
+
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.17.1")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.17.1")
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    implementation("org.fusesource.jansi:jansi:2.3.4")
+    implementation("org.fusesource.jansi:jansi:2.4.1")
 }
 
 tasks {
